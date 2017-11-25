@@ -4,9 +4,16 @@ define([
 
     var exports = {};
 
-    var initDataframe = () => {
+    var validate = () => {
 
         let url = $('#url').val();
+
+        if(url !== "" && url !== undefined) {
+            initDataframe(url);
+        }
+    }
+
+    var initDataframe = (url) => {
 
         $.getJSON(url, function (data) {
             IPython.notebook.kernel.execute("df='" + JSON.stringify(data) + "'")
@@ -19,13 +26,13 @@ define([
 
         let body = $('<div>');
 
-        $("<div class='form-group'><label for='url'>Rest URL:</label><input type='text' class='form-control' id='url'></div>").appendTo(body)
+        $("<div class='form-group'><label for='url'>Enter a valid rest URI:</label><input type='text' class='form-control' id='url'></div>").appendTo(body)
 
         Jupyter.dialog.modal({
             title: "Easy Rest Dataframe :)",
             body: body,
             buttons: {
-                "Request": {
+                "Set (df) Variable": {
                     click: initDataframe
                 }
             }
@@ -43,7 +50,7 @@ define([
 
         let action = {
             icon: 'fa fa-smile-o',
-            help: 'Open EasyRest by Rob',
+            help: 'Create/update python variable(df) with the result of the rest URI set.',
             help_index: 'zz',
             handler: show_dialog
         };
